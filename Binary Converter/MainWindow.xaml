@@ -1,0 +1,855 @@
+﻿<Window
+    x:Class="BinaryConverter.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:s="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:BinaryConverter"
+    Title="Binary Converter"
+    Width="610"
+    Height="450"
+    FontSize="14"
+    SizeToContent="Height"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <vm:BinaryConverter x:Key="BinaryConverter" />
+        <vm:HexStringConverter x:Key="HexStringConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:BinaryConverterViewModel />
+    </Window.DataContext>
+    <DockPanel
+        HorizontalAlignment="Center"
+        VerticalAlignment="Stretch"
+        LastChildFill="True">
+        <TextBlock
+            Margin="3"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Top"
+            Text="Input"
+            Visibility="Collapsed" />
+        <Border
+            Name="mainMaskBorder"
+            Grid.Row="0"
+            Margin="3"
+            BorderBrush="Silver"
+            BorderThickness="0.5"
+            DockPanel.Dock="Top">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style x:Key="ControlAlignment" TargetType="{x:Type TextBlock}">
+                        <Setter Property="Margin" Value="10,3,10,3" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                    <Style x:Key="GridBorder" TargetType="{x:Type Border}">
+                        <Setter Property="Padding" Value="3" />
+                        <Setter Property="BorderBrush" Value="#FFC0C0C0" />
+                        <Setter Property="BorderThickness" Value="0.5" />
+                    </Style>
+                </Grid.Resources>
+                <Border
+                    Grid.Row="0"
+                    Grid.RowSpan="3"
+                    Grid.Column="0"
+                    Padding="3"
+                    BorderBrush="Silver"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Bit" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Padding="3"
+                    BorderBrush="Silver"
+                    Style="{StaticResource GridBorder}"
+                    Visibility="Hidden">
+                    <TextBlock
+                        Name="MaskedBitTextBlock"
+                        Margin="3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Masked Bit" />
+                </Border>
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="8"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="BINARY" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="7" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="6" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="5" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="4" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="5"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="3" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="6"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="2" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="7"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="1" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="8"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="0" />
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Style="{StaticResource GridBorder}">
+                    <CheckBox
+                        Name="checkBoxBit7"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding MaskChanngedCommand}"
+                        IsChecked="{Binding BitMask[7], UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BinaryConverter}">
+                                <Binding>
+                                    <Binding.Source>
+                                        <s:Int32>7</s:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                                <Binding Path="IsChecked" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Style="{StaticResource GridBorder}">
+                    <CheckBox
+                        Name="checkBoxBit6"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding MaskChanngedCommand}"
+                        IsChecked="{Binding BitMask[6], UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BinaryConverter}">
+                                <Binding>
+                                    <Binding.Source>
+                                        <s:Int32>6</s:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                                <Binding Path="IsChecked" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="3"
+                    Style="{StaticResource GridBorder}">
+                    <CheckBox
+                        Name="checkBoxBit5"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding MaskChanngedCommand}"
+                        IsChecked="{Binding BitMask[5], UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BinaryConverter}">
+                                <Binding>
+                                    <Binding.Source>
+                                        <s:Int32>5</s:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                                <Binding Path="IsChecked" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="4"
+                    Style="{StaticResource GridBorder}">
+                    <CheckBox
+                        Name="checkBoxBit4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding MaskChanngedCommand}"
+                        IsChecked="{Binding BitMask[4], UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BinaryConverter}">
+                                <Binding>
+                                    <Binding.Source>
+                                        <s:Int32>4</s:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                                <Binding Path="IsChecked" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="5"
+                    Style="{StaticResource GridBorder}">
+                    <CheckBox
+                        Name="checkBoxBit3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding MaskChanngedCommand}"
+                        IsChecked="{Binding BitMask[3], UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BinaryConverter}">
+                                <Binding>
+                                    <Binding.Source>
+                                        <s:Int32>3</s:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                                <Binding Path="IsChecked" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="6"
+                    Style="{StaticResource GridBorder}">
+                    <CheckBox
+                        Name="checkBoxBit2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding MaskChanngedCommand}"
+                        IsChecked="{Binding BitMask[2], UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BinaryConverter}">
+                                <Binding>
+                                    <Binding.Source>
+                                        <s:Int32>2</s:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                                <Binding Path="IsChecked" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="7"
+                    Style="{StaticResource GridBorder}">
+                    <CheckBox
+                        Name="checkBoxBit1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding MaskChanngedCommand}"
+                        IsChecked="{Binding BitMask[1], UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BinaryConverter}">
+                                <Binding>
+                                    <Binding.Source>
+                                        <s:Int32>1</s:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                                <Binding Path="IsChecked" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="8"
+                    Style="{StaticResource GridBorder}">
+                    <CheckBox
+                        Name="checkBoxBit0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding MaskChanngedCommand}"
+                        IsChecked="{Binding BitMask[0], UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BinaryConverter}">
+                                <Binding>
+                                    <Binding.Source>
+                                        <s:Int32>0</s:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                                <Binding Path="IsChecked" RelativeSource="{RelativeSource Self}" />
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                </Border>
+                <Border
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="9"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="DEC" />
+                </Border>
+                <Border
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="10"
+                    Style="{StaticResource GridBorder}">
+                    <TextBlock Style="{StaticResource ControlAlignment}" Text="Hex" />
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="9"
+                    Style="{StaticResource GridBorder}">
+                    <TextBox
+                        Width="100"
+                        Margin="3"
+                        HorizontalContentAlignment="Center"
+                        Text="{Binding MaskDecValue, UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
+                <Border
+                    Grid.Row="2"
+                    Grid.Column="10"
+                    Style="{StaticResource GridBorder}">
+                    <TextBox
+                        Width="100"
+                        Margin="3"
+                        HorizontalContentAlignment="Center"
+                        Text="{Binding MaskDecValue, StringFormat={}{0:X}, Converter={StaticResource HexStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Border>
+                <Border
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="11"
+                    Style="{StaticResource GridBorder}">
+                    <WrapPanel>
+                        <Button
+                            Margin="3"
+                            Padding="3"
+                            Command="{Binding SetAllBitsCommand}"
+                            Content="Set All bit" />
+                        <Button
+                            Margin="3"
+                            Padding="3"
+                            Command="{Binding ClearAllBitsCommand}"
+                            Content="Clear All bit" />
+                    </WrapPanel>
+                </Border>
+            </Grid>
+        </Border>
+        <TextBlock
+            Margin="3"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Top"
+            Text="Result"
+            Visibility="Collapsed" />
+        <Border
+            Margin="3"
+            VerticalAlignment="Stretch"
+            BorderBrush="Silver"
+            BorderThickness="0.5"
+            DockPanel.Dock="Top">
+            <UniformGrid
+                Name="ShowValueGrid"
+                Grid.Row="3"
+                Background="#FFD0D0D0"
+                Columns="4"
+                FlowDirection="LeftToRight">
+                <TextBlock
+                    Margin="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="" />
+                <TextBlock
+                    Margin="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="HEX" />
+                <TextBlock
+                    Margin="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="BIN" />
+                <TextBlock
+                    Margin="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="DEC" />
+                <TextBlock
+                    Margin="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Data" />
+                <TextBox
+                    Width="100"
+                    Margin="3"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Background="#FFF0F0F0"
+                    IsReadOnly="True"
+                    Text="{Binding MaskDecValue, StringFormat={}{0:X2}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                <TextBox
+                    Width="130"
+                    Margin="3"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="#FFF0F0F0"
+                    IsReadOnly="True"
+                    Text="{Binding BitMaskBitString, Mode=OneWay}" />
+                <TextBox
+                    Width="100"
+                    Margin="3"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="#FFF0F0F0"
+                    IsReadOnly="True"
+                    Text="{Binding MaskDecValue, Mode=OneWay}" />
+                <TextBlock
+                    Margin="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="Inverted Data" />
+                <TextBox
+                    Width="100"
+                    Margin="3"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="#FFF0F0F0"
+                    IsReadOnly="True"
+                    Text="{Binding InvertMaskDecValue, StringFormat={}{0:X2}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox
+                    Width="130"
+                    Margin="3"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="#FFF0F0F0"
+                    IsReadOnly="True"
+                    Text="{Binding InvertedBitMaskBitString, Mode=OneWay}" />
+                <TextBox
+                    Width="100"
+                    Margin="3"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="#FFF0F0F0"
+                    IsReadOnly="True"
+                    Text="{Binding InvertMaskDecValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </UniformGrid>
+        </Border>
+        <Border
+            Margin="3"
+            VerticalAlignment="Stretch"
+            BorderBrush="Silver"
+            BorderThickness="0.5"
+            DockPanel.Dock="Top">
+            <RichTextBox BorderThickness="0">
+                <FlowDocument Background="#FFE0E0E0" FlowDirection="LeftToRight">
+                    <Table CellSpacing="0" FontSize="16">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>DEC</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>BIN</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>HEX</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>DEC</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>BIN</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>HEX</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0000</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>8</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1000</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>8</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0001</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>9</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1001</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>9</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>2</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0010</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>2</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>10</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1010</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>A</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>3</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0011</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>3</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>11</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1011</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>B</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>4</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0100</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>4</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>12</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1100</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>C</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>5</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0101</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>5</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>13</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1101</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>D</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>6</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0110</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>6</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>14</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1110</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>E</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>7</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>0111</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,2,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>7</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="2,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>15</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,0,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>1111</Paragraph>
+                                </TableCell>
+                                <TableCell
+                                    BorderBrush="Black"
+                                    BorderThickness="1,1,1,1"
+                                    TextAlignment="Center">
+                                    <Paragraph>F</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                </FlowDocument>
+            </RichTextBox>
+        </Border>
+    </DockPanel>
+</Window>
