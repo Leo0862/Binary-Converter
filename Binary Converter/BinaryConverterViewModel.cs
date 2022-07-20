@@ -177,10 +177,10 @@ namespace BinaryConverter
             set
             {
                 SetProperty(ref bitMask, value);
-                OnPropertyChanged("MaskDecValue");
-                OnPropertyChanged("BitMaskBitString");
-                OnPropertyChanged("InvertMaskDecValue");
-                OnPropertyChanged("InvertedBitMaskBitString");
+                OnPropertyChanged(nameof(MaskDecValue));
+                OnPropertyChanged(nameof(BitMaskBitString));
+                OnPropertyChanged(nameof(InvertMaskDecValue));
+                OnPropertyChanged(nameof(InvertedBitMaskBitString));
             }
         }
 
@@ -197,14 +197,14 @@ namespace BinaryConverter
                 var bitArray = new BitArray(new byte[] { value });
                 //SetProperty(ref bitMask, bitArray, true, "BitMask");
                 IReadOnlyCollection<ValidationResult> validationResults;
-                var result = TrySetProperty(ref bitMask, bitArray, out validationResults, "BitMask");
+                var result = TrySetProperty(ref bitMask, bitArray, out validationResults, nameof(BitMask));
                 if (result == true)
                 {
-                    //OnPropertyChanged("BitMask");
-                    OnPropertyChanged("MaskDecValue");
-                    OnPropertyChanged("BitMaskBitString");
-                    OnPropertyChanged("InvertMaskDecValue");
-                    OnPropertyChanged("InvertedBitMaskBitString");
+                    //OnPropertyChanged(nameof(BitMask));
+                    OnPropertyChanged(nameof(MaskDecValue));
+                    OnPropertyChanged(nameof(BitMaskBitString));
+                    OnPropertyChanged(nameof(InvertMaskDecValue));
+                    OnPropertyChanged(nameof(InvertedBitMaskBitString));
                 }
             }
         }
@@ -217,7 +217,6 @@ namespace BinaryConverter
             }
         }
 
-
         private void MaskChannged(BinaryConverterUnit? arg)
         {
             if (arg != null)
@@ -225,11 +224,11 @@ namespace BinaryConverter
                 BinaryConverterUnit bitMaskUnit = (BinaryConverterUnit)arg;
                 BitMask.Set(bitMaskUnit.Position, bitMaskUnit.Checked);
 
-                OnPropertyChanged("BitMask");
-                OnPropertyChanged("MaskDecValue");
-                OnPropertyChanged("BitMaskBitString");
-                OnPropertyChanged("InvertMaskDecValue");
-                OnPropertyChanged("InvertedBitMaskBitString");
+                OnPropertyChanged(nameof(BitMask));
+                OnPropertyChanged(nameof(MaskDecValue));
+                OnPropertyChanged(nameof(BitMaskBitString));
+                OnPropertyChanged(nameof(InvertMaskDecValue));
+                OnPropertyChanged(nameof(InvertedBitMaskBitString));
             }
         }
 
@@ -237,18 +236,6 @@ namespace BinaryConverter
         {
             byte value = 0;
             value = Convert.ToByte(byteString, 16);
-            //try
-            //{
-            //    value = Convert.ToByte(byteString, 16);
-            //}
-            //catch (FormatException ex)
-            //{
-            //    value = 255;
-            //}
-            //catch (OverflowException ex)
-            //{
-            //    value = 255;
-            //}
 
             return value;
         }
@@ -257,20 +244,20 @@ namespace BinaryConverter
         {
             BitMask.Or(new BitArray(8, true));
 
-            OnPropertyChanged("BitMask");
-            OnPropertyChanged("MaskDecValue");
-            OnPropertyChanged("BitMaskBitString");
-            OnPropertyChanged("InvertMaskDecValue");
-            OnPropertyChanged("InvertedBitMaskBitString");
+            OnPropertyChanged(nameof(BitMask));
+            OnPropertyChanged(nameof(MaskDecValue));
+            OnPropertyChanged(nameof(BitMaskBitString));
+            OnPropertyChanged(nameof(InvertMaskDecValue));
+            OnPropertyChanged(nameof(InvertedBitMaskBitString));
         }
         private void ClearAllBits()
         {
             BitMask.And(new BitArray(8, false));
-            OnPropertyChanged("BitMask");
-            OnPropertyChanged("MaskDecValue");
-            OnPropertyChanged("BitMaskBitString");
-            OnPropertyChanged("InvertMaskDecValue");
-            OnPropertyChanged("InvertedBitMaskBitString");
+            OnPropertyChanged(nameof(BitMask));
+            OnPropertyChanged(nameof(MaskDecValue));
+            OnPropertyChanged(nameof(BitMaskBitString));
+            OnPropertyChanged(nameof(InvertMaskDecValue));
+            OnPropertyChanged(nameof(InvertedBitMaskBitString));
         }
 
         public static ValidationResult? ByteStringToHex(string value, ValidationContext context)
