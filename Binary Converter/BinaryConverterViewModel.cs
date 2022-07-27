@@ -136,7 +136,7 @@ namespace BinaryConverter
                 sb.Append(binary[idx] == true ? "1" : "0");
                 if (idx == 4 && sep == true)
                 {
-                    sb.Append("_");
+                    sb.Append(" ");
                 }
             }
 
@@ -151,6 +151,8 @@ namespace BinaryConverter
             maskChanngedCommand = new RelayCommand<BinaryConverterUnit>(MaskChannged);
             setAllBitsCommand = new RelayCommand(SetAllBits);
             clearAllBitsCommand = new RelayCommand(ClearAllBits);
+            leftShiftCommand = new RelayCommand(LeftShift);
+            rightShiftCommand = new RelayCommand(RightShift);
         }
 
         private BitArray bitMask = new(8, false);
@@ -167,6 +169,12 @@ namespace BinaryConverter
 
         private RelayCommand clearAllBitsCommand;
         public ICommand ClearAllBitsCommand => clearAllBitsCommand;
+
+        private RelayCommand leftShiftCommand;
+        public ICommand LeftShiftCommand => leftShiftCommand;
+
+        private RelayCommand rightShiftCommand;
+        public ICommand RightShiftCommand => rightShiftCommand;
 
         public BitArray BitMask
         {
@@ -250,9 +258,30 @@ namespace BinaryConverter
             OnPropertyChanged(nameof(InvertMaskDecValue));
             OnPropertyChanged(nameof(InvertedBitMaskBitString));
         }
+
         private void ClearAllBits()
         {
             BitMask.And(new BitArray(8, false));
+            OnPropertyChanged(nameof(BitMask));
+            OnPropertyChanged(nameof(MaskDecValue));
+            OnPropertyChanged(nameof(BitMaskBitString));
+            OnPropertyChanged(nameof(InvertMaskDecValue));
+            OnPropertyChanged(nameof(InvertedBitMaskBitString));
+        }
+
+        private void LeftShift()
+        {
+            BitMask = BitMask.LeftShift(1);
+            OnPropertyChanged(nameof(BitMask));
+            OnPropertyChanged(nameof(MaskDecValue));
+            OnPropertyChanged(nameof(BitMaskBitString));
+            OnPropertyChanged(nameof(InvertMaskDecValue));
+            OnPropertyChanged(nameof(InvertedBitMaskBitString));
+        }
+
+        private void RightShift()
+        {
+            BitMask = BitMask.RightShift(1);
             OnPropertyChanged(nameof(BitMask));
             OnPropertyChanged(nameof(MaskDecValue));
             OnPropertyChanged(nameof(BitMaskBitString));
